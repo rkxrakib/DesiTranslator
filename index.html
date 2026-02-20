@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দেশি ট্রান্সলেটর - অল ইন ওয়ান</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <header>
+            <h1>দেশি ট্রান্সলেটর <span class="beta">Pro</span></h1>
+        </header>
+
+        <div class="lang-select-bar">
+            <div class="from-lang">প্রমিত বাংলা</div>
+            <div class="swap-icon"><i class="fa-solid fa-arrow-right"></i></div>
+            <select id="toRegion">
+                <option value="dhaka">ঢাকা (আঞ্চলিক)</option>
+                <option value="ctg">চট্টগ্রাম (চাটগাঁইয়া)</option>
+                <option value="barisal">বরিশাল (বরিশাইল্ল্যা)</option>
+                <option value="sylhet">সিলেট (সিলটি)</option>
+                <option value="rajshahi">রাজশাহী (উত্তরাঞ্চল)</option>
+                <option value="khulna">খুলনা</option>
+                <option value="rangpur">রংপুর (বাহে)</option>
+                <option value="mymensingh">ময়মনসিংহ</option>
+            </select>
+        </div>
+
+        <div class="input-container">
+            <div class="input-box">
+                <textarea id="sourceInput" placeholder="এখানে শুদ্ধ বাংলা লিখুন..."></textarea>
+                <div class="tools">
+                    <button onclick="playVoice('sourceInput')"><i class="fa-solid fa-volume-high"></i></button>
+                    <span id="charCount">০</span>
+                </div>
+            </div>
+
+            <div class="output-box">
+                <textarea id="targetOutput" readonly placeholder="অনুবাদ এখানে দেখা যাবে..."></textarea>
+                <div class="tools">
+                    <button onclick="playVoice('targetOutput')"><i class="fa-solid fa-volume-high"></i></button>
+                    <button onclick="copyResult()"><i class="fa-solid fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

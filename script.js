@@ -1,77 +1,72 @@
-// ৮টি বিভাগের জন্য বিশাল ডেটাবেস
-const regionalDatabase = {
-    "dhaka": {
-        "আমি": "আমি", "তুমি": "তুমি", "কেমন": "কেমতে", "খাবো": "খামু", "কেন": "ক্যালা", "কোথায়": "কই", "বলছি": "কইতাছি"
-    },
-    "ctg": {
-        "আমি": "আঁই", "আমার": "আঁত্তে", "তুমি": "তুঁই", "তোমার": "তোঁয়ার", "কেমন": "ক্যান", "আছো": "আছ", "খাবো": "হাইয়্যুম", "কেন": "কিল্লায়"
-    },
-    "barisal": {
-        "আমি": "মুই", "আমার": "মোর", "তুমি": "তুমি", "খাবো": "খামু", "কেন": "ক্যাফে", "কেমন": "কেম্নে", "আছো": "আছোহেন"
-    },
-    "sylhet": {
-        "আমি": "আমি", "তুমি": "তুইন", "কেমন": "কিলা", "আছো": "আছইন", "ভাত": "ভাত", "পানি": "ফানি", "কেন": "কেনে"
-    },
-    "rajshahi": {
-        "আমি": "হামি", "আমার": "হামার", "তুমি": "তুমি", "কেমন": "ক্যামন", "আছো": "আছ্যা", "খাবো": "খাব্যা", "যাবো": "যাব্যা"
-    },
-    "khulna": {
-        "আমি": "আমি", "তুমি": "তিমি", "খাবো": "খাবানে", "যাবো": "যাবানে", "কেন": "কিনে"
-    },
-    "rangpur": {
-        "আমি": "মুই", "আমার": "মোর", "তুমি": "তুঁই", "কেমন": "ক্যাংকরি", "আছো": "আছিস", "খাবো": "খাম", "কোথায়": "কটে"
-    },
-    "mymensingh": {
-        "আমি": "আমি", "খাবো": "খামু", "কেন": "কিয়ের লাইগা", "বলছি": "কইতাছি", "যাবো": "যামুগা"
-    }
+// ১. আপনার বড় ডিকশনারি এখানে ডাটাবেজ হিসেবে থাকবে
+// স্ট্রাকচার: "শব্দ": ["প্রমিত", "চাটগাঁইয়া", "নোয়াখালী", "বরিশাল", "সিলেট"...]
+const masterDict = {
+    "আমি": { bangla: "আমি", ctg: "আঁই", noakhali: "আঁই", barisal: "মুই", sylhet: "আমি" },
+    "ভাত": { bangla: "ভাত", ctg: "ভাত", noakhali: "ভাত", barisal: "ভাৎ", sylhet: "ভাত" },
+    "খাবো": { bangla: "খাবো", ctg: "হাইয়্যুম", noakhali: "হাইয়্যুম", barisal: "খামু", sylhet: "খাইমু" },
+    "কেমন": { bangla: "কেমন", ctg: "ক্যান", noakhali: "ক্যান", barisal: "কেম্নে", sylhet: "কিলা" },
+    "আছো": { bangla: "আছো", ctg: "আছ", noakhali: "আছ", barisal: "আছোহেন", sylhet: "আছইন" }
 };
 
-const sourceInput = document.getElementById('sourceInput');
-const targetOutput = document.getElementById('targetOutput');
-const toRegion = document.getElementById('toRegion');
-const charCount = document.getElementById('charCount');
+// ২. অটোমেটিক হাইট বাড়ানো
+function autoHeight(elem) {
+    elem.style.height = "1px";
+    elem.style.height = (elem.scrollHeight) + "px";
+    translate();
+}
 
-// টাইপ করার সময় অটোমেটিক ট্রান্সলেট
-sourceInput.addEventListener('input', () => {
-    translateText();
-    charCount.innerText = sourceInput.value.length;
-});
+// ৩. ট্রান্সলেশন লজিক (Any to Any)
+function translate() {
+    const input = document.getElementById("inputText").value.trim();
+    const from = document.getElementById("fromLang").value;
+    const to = document.getElementById("toLang").value;
+    const outputField = document.getElementById("outputText");
 
-// বিভাগ পরিবর্তনের সময় অটোমেটিক ট্রান্সলেট
-toRegion.addEventListener('change', translateText);
-
-function translateText() {
-    let text = sourceInput.value.trim();
-    let region = toRegion.value;
-    
-    if (text === "") {
-        targetOutput.value = "";
+    if (!input) {
+        outputField.value = "";
         return;
     }
 
-    let words = text.split(/\s+/);
+    let words = input.split(/\s+/);
     let result = words.map(word => {
-        // শব্দটির আঞ্চলিক রূপ খুঁজবে, না পেলে আগের শব্দ রাখবে
-        return regionalDatabase[region][word] || word;
+        // প্রথমে ইনপুট শব্দটা কোন বাংলা শব্দের আঞ্চলিক রূপ সেটা খুঁজে বের করা
+        let banglaWord = null;
+        for (let key in masterDict) {
+            if (masterDict[key][from] === word) {
+                banglaWord = key;
+                break;
+            }
+        }
+
+        // যদি বাংলা শব্দ পাওয়া যায়, তবে সেটাকে টার্গেট ভাষায় রূপান্তর
+        if (banglaWord && masterDict[banglaWord][to]) {
+            return masterDict[banglaWord][to];
+        }
+        return word; // না মিললে আগেরটাই
     });
 
-    targetOutput.value = result.join(" ");
+    outputField.value = result.join(" ");
 }
 
-// ভয়েস ফাংশন (গুগল স্টাইল)
-function playVoice(elementId) {
-    let text = document.getElementById(elementId).value;
+// ৪. ভয়েস বাটন ফিক্সড (এটি ব্রাউজারের বাংলা ভয়েস ব্যবহার করবে)
+function playVoice(id) {
+    const text = document.getElementById(id).value;
     if (!text) return;
-
-    let utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'bn-BD';
-    utterance.rate = 0.8; // স্বাভাবিকের চেয়ে একটু ধীর যাতে আঞ্চলিক টান বোঝা যায়
-    window.speechSynthesis.speak(utterance);
+    
+    // স্পিচ সিন্থেসিস বন্ধ করে নতুন করে শুরু করা
+    window.speechSynthesis.cancel();
+    
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = text;
+    msg.lang = 'bn-BD';
+    msg.rate = 0.8; 
+    window.speechSynthesis.speak(msg);
 }
 
-// কপি ফাংশন
-function copyResult() {
-    targetOutput.select();
-    document.execCommand('copy');
-    alert("অনুবাদ কপি হয়েছে!");
+// ৫. কপি ফাংশন
+function copy() {
+    const text = document.getElementById("outputText");
+    text.select();
+    document.execCommand("copy");
+    alert("কপি হয়েছে ওস্তাদ!");
 }

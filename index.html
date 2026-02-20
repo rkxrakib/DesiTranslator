@@ -3,46 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>দেশি ট্রান্সলেটর - অল ইন ওয়ান</title>
+    <title>আঞ্চলিক ট্রান্সলেটর</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="app-wrapper">
+    <div class="main-container">
         <header>
-            <h1>দেশি ট্রান্সলেটর <span class="beta">Pro</span></h1>
+            <h1 class="fire-text">দেশি ট্রান্সলেটর প্রো 🔥</h1>
         </header>
 
-        <div class="lang-select-bar">
-            <div class="from-lang">প্রমিত বাংলা</div>
-            <div class="swap-icon"><i class="fa-solid fa-arrow-right"></i></div>
-            <select id="toRegion">
-                <option value="dhaka">ঢাকা (আঞ্চলিক)</option>
-                <option value="ctg">চট্টগ্রাম (চাটগাঁইয়া)</option>
-                <option value="barisal">বরিশাল (বরিশাইল্ল্যা)</option>
-                <option value="sylhet">সিলেট (সিলটি)</option>
-                <option value="rajshahi">রাজশাহী (উত্তরাঞ্চল)</option>
-                <option value="khulna">খুলনা</option>
-                <option value="rangpur">রংপুর (বাহে)</option>
-                <option value="mymensingh">ময়মনসিংহ</option>
+        <div class="lang-selector">
+            <select id="fromLang">
+                <option value="bangla">প্রমিত বাংলা 🇧🇩</option>
+                <option value="ctg">চাটগাঁইয়া 🔥</option>
+                <option value="noakhali">নোয়াখালী ⚡</option>
+                <option value="barisal">বরিশাল 🌊</option>
+                <option value="sylhet">সিলেট ☕</option>
+                <option value="dhaka">পুরান ঢাকা 🏢</option>
+                <option value="rajshahi">রাজশাহী 🥭</option>
+                <option value="khulna">খুলনা 🐅</option>
+                <option value="rangpur">রংপুর 🌾</option>
+                <option value="mymensingh">ময়মনসিংহ 🏰</option>
+            </select>
+
+            <div class="swap-icon"><i class="fa-solid fa-repeat"></i></div>
+
+            <select id="toLang">
+                <option value="ctg">চাটগাঁইয়া 🔥</option>
+                <option value="bangla">প্রমিত বাংলা 🇧🇩</option>
+                <option value="noakhali">নোয়াখালী ⚡</option>
+                <option value="barisal">বরিশাল 🌊</option>
+                <option value="sylhet">সিলেট ☕</option>
+                <option value="dhaka">পুরান ঢাকা 🏢</option>
+                <option value="rajshahi">রাজশাহী 🥭</option>
+                <option value="khulna">খুলনা 🐅</option>
+                <option value="rangpur">রংপুর 🌾</option>
+                <option value="mymensingh">ময়মনসিংহ 🏰</option>
             </select>
         </div>
 
-        <div class="input-container">
-            <div class="input-box">
-                <textarea id="sourceInput" placeholder="এখানে শুদ্ধ বাংলা লিখুন..."></textarea>
-                <div class="tools">
-                    <button onclick="playVoice('sourceInput')"><i class="fa-solid fa-volume-high"></i></button>
-                    <span id="charCount">০</span>
+        <div class="translator-grid">
+            <!-- ইনপুট বক্স -->
+            <div class="animated-box">
+                <div class="inner-content">
+                    <textarea id="inputText" placeholder="এখানে লিখুন..." oninput="autoHeight(this)"></textarea>
+                    <div class="box-footer">
+                        <button onclick="playVoice('inputText')"><i class="fa-solid fa-volume-high"></i></button>
+                    </div>
                 </div>
             </div>
 
-            <div class="output-box">
-                <textarea id="targetOutput" readonly placeholder="অনুবাদ এখানে দেখা যাবে..."></textarea>
-                <div class="tools">
-                    <button onclick="playVoice('targetOutput')"><i class="fa-solid fa-volume-high"></i></button>
-                    <button onclick="copyResult()"><i class="fa-solid fa-copy"></i></button>
+            <!-- আউটপুট বক্স -->
+            <div class="animated-box result-box">
+                <div class="inner-content">
+                    <textarea id="outputText" placeholder="অনুবাদ..." readonly oninput="autoHeight(this)"></textarea>
+                    <div class="box-footer">
+                        <button onclick="playVoice('outputText')"><i class="fa-solid fa-volume-high"></i></button>
+                        <button onclick="copy()"><i class="fa-solid fa-copy"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
